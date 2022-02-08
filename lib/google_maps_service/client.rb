@@ -1,6 +1,6 @@
-require 'hurley'
+require 'faraday'
+#require 'faraday/retry'
 require 'multi_json'
-require 'retriable'
 require 'thread'
 
 require 'google_maps_service/errors'
@@ -137,16 +137,16 @@ module GoogleMapsService
     end
 
     # Create a new HTTP client.
-    # @return [Hurley::Client]
+    # @return [Faraday::Connection]
     def new_client
-      client = Hurley::Client.new
-      client.request_options.query_class = Hurley::Query::Flat
-      client.request_options.redirection_limit = 0
-      client.header[:user_agent] = user_agent
+      client = Faraday.new(DEFAULT_BASE_URL)
+      #client.request_options.query_class = Hurley::Query::Flat
+      #client.request_options.redirection_limit = 0
+      client.headers[:user_agent] = user_agent
 
-      client.connection = @connection if @connection
-      @request_options.each_pair {|key, value| client.request_options[key] = value } if @request_options
-      @ssl_options.each_pair {|key, value| client.ssl_options[key] = value } if @ssl_options
+      #client.connection = @connection if @connection
+      #@request_options.each_pair {|key, value| client.request_options[key] = value } if @request_options
+      #@ssl_options.each_pair {|key, value| client.ssl_options[key] = value } if @ssl_options
 
       client
     end
@@ -171,7 +171,7 @@ module GoogleMapsService
     def get(path, params, base_url: DEFAULT_BASE_URL, accepts_client_id: true, custom_response_decoder: nil)
       url = base_url + generate_auth_url(path, params, accepts_client_id)
 
-      Retriable.retriable timeout: @retry_timeout, on: RETRIABLE_ERRORS do |try|
+      #Retriable.retriable timeout: @retry_timeout, on: RETRIABLE_ERRORS do |try|
         begin
           request_query_ticket
           response = client.get url
@@ -181,7 +181,7 @@ module GoogleMapsService
 
         return custom_response_decoder.call(response) if custom_response_decoder
         decode_response_body(response)
-      end
+      #end
     end
 
     # Get/wait the request "ticket" if QPS is configured.
@@ -251,7 +251,7 @@ module GoogleMapsService
     #
     # @param [Hurley::Response] response Web API response.
     def check_response_status_code(response)
-      case response.status_code
+      case response.status
       when 200..300
         # Do-nothing
       when 301, 302, 303, 307
