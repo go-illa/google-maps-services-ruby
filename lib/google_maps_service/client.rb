@@ -172,12 +172,12 @@ module GoogleMapsService
       url = base_url + generate_auth_url(path, params, accepts_client_id)
 
       #Retriable.retriable timeout: @retry_timeout, on: RETRIABLE_ERRORS do |try|
-        begin
-          request_query_ticket
+        #begin
+          #request_query_ticket
           response = client.get url
-        ensure
-          release_query_ticket
-        end
+        #ensure
+          #release_query_ticket
+        #end
 
         return custom_response_decoder.call(response) if custom_response_decoder
         decode_response_body(response)
