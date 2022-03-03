@@ -56,7 +56,6 @@ module GoogleMapsService
 
     # Construct Google Maps Web Service API client.
     #
-    # This gem uses [Hurley](https://github.com/lostisland/hurley) as internal HTTP client.
     # You can configure `Hurley::Client` through `request_options` and `ssl_options` parameters.
     # You can also directly get the `Hurley::Client` object via {#client} method.
     #
@@ -119,7 +118,7 @@ module GoogleMapsService
     end
 
     # Get the current HTTP client.
-    # @return [Hurley::Client]
+    # @return [Faraday::Client]
     def client
       @client ||= new_client
     end
@@ -237,11 +236,11 @@ module GoogleMapsService
 
     # Extract and parse body response as hash. Throw an error if there is something wrong with the response.
     #
-    # @param [Hurley::Response] response Web API response.
+    # @param [Faraday::Response] response Web API response.
     #
     # @return [Hash] Response body as hash. The hash key will be symbolized.
     def decode_response_body(response)
-      check_response_status_code(response)
+      check_response_status(response)
       body = MultiJson.load(response.body, :symbolize_keys => true)
       check_body_error(response, body)
       body
@@ -249,13 +248,13 @@ module GoogleMapsService
 
     # Check HTTP response status code. Raise error if the status is not 2xx.
     #
-    # @param [Hurley::Response] response Web API response.
-    def check_response_status_code(response)
+    # @param [Faraday::Response] response Web API response.
+    def check_response_status(response)
       case response.status
       when 200..300
         # Do-nothing
       when 301, 302, 303, 307
-        raise GoogleMapsService::Error::RedirectError.new(response), sprintf('Redirect to %s', response.header[:location])
+        raise GoogleMapsService::Error::RedirectError.new(response), sprintf('Redirect to %s', response.headers[:location])
       when 401
         raise GoogleMapsService::Error::ClientError.new(response), 'Unauthorized'
       when 304, 400, 402...500
@@ -267,7 +266,7 @@ module GoogleMapsService
 
     # Check response body for error status.
     #
-    # @param [Hurley::Response] response Response object.
+    # @param [Faraday::Response] response Response object.
     # @param [Hash] body Response body.
     #
     # @return [void]
