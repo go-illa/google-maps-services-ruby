@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['edwardsamuel92@gmail.com']
 
   spec.summary       = %q{Ruby gem for Google Maps Web Service APIs }
-  spec.homepage      = %q{https://github.com/edwardsamuel/google-maps-services-ruby}
+  spec.homepage      = %q{https://github.com/go-illa/google-maps-services-ruby}
   spec.license       = 'Apache-2.0'
   spec.required_ruby_version = '>= 2.0.0'
 
@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
   # spec.has_rdoc      = 'yard'
 
-  spec.add_runtime_dependency 'multi_json', '~> 1.15'
-  spec.add_runtime_dependency 'faraday', '>= 2'
+  spec.add_runtime_dependency 'multi_json', '~> 1.12'
+  spec.add_runtime_dependency 'faraday', '>= 1'
   spec.add_runtime_dependency 'retriable', '~> 3.0'
 end
