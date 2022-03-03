@@ -74,7 +74,7 @@ describe GoogleMapsService::Apis::Roads do
   #   end
 
   #   it 'should make request twice' do
-  #     results = client.geocode(address: 'Sydney')
+  #     results = client.geocode('Sydney')
   #     expect(a_request(:get, 'https://maps.googleapis.com/maps/api/geocode/json?key=%s&address=Sydney' % api_key)).to have_been_made.times(2)
   #   end
   # end

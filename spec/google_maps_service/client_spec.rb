@@ -22,7 +22,7 @@ describe GoogleMapsService::Client do
     it 'should take between 0-3 seconds' do
       start_time = Time.now
       total_request.times do
-        client.geocode(address: "Sesame St.")
+        client.geocode("Sesame St.")
       end
       end_time = Time.now
       expect(end_time - start_time).to be_between(0, 3).inclusive
@@ -182,7 +182,7 @@ EOF
       end
 
       it 'should raise Faraday::ConnectionFailed' do
-        expect { client.geocode(address: 'Sydney') }.to raise_error Faraday::ConnectionFailed
+        expect { client.geocode('Sydney') }.to raise_error Faraday::ConnectionFailed
       end
     end
   end
