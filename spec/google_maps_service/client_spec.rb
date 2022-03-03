@@ -19,13 +19,13 @@ describe GoogleMapsService::Client do
         to_return(:status => 200, headers: { 'Content-Type' => 'application/json' }, :body => '{"status":"OK","results":[]}')
     end
 
-    it 'should take between 0-2 seconds' do
+    it 'should take between 0-3 seconds' do
       start_time = Time.now
       total_request.times do
         client.geocode(address: "Sesame St.")
       end
       end_time = Time.now
-      expect(end_time - start_time).to be_between(0, 2).inclusive
+      expect(end_time - start_time).to be_between(0, 3).inclusive
     end
   end
 
