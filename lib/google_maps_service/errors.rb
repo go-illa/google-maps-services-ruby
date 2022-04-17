@@ -48,5 +48,9 @@ module GoogleMapsService
     # An unathorized error occurred. It might be caused by invalid key/secret or invalid access.
     class RequestDeniedError < ApiError
     end
+
+    # When an Address is not found. i.e. An address string could not be geocoded
+    class NotFoundError < ApiError
+    end
   end
 end

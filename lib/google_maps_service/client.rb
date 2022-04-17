@@ -280,6 +280,8 @@ module GoogleMapsService
         raise GoogleMapsService::Error::RequestDeniedError.new(response), body[:error_message]
       when 'INVALID_REQUEST'
         raise GoogleMapsService::Error::InvalidRequestError.new(response), body[:error_message]
+      when 'NOT_FOUND'
+        raise GoogleMapsService::Error::NotFoundError.new(response), (body[:error_message] || 'ADDRESS NOT FOUND')
       else
         raise GoogleMapsService::Error::ApiError.new(response), body[:error_message]
       end
