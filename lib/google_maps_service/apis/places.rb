@@ -14,7 +14,7 @@ module GoogleMapsService::Apis
       params[:language] = language if language
       params[:types] = types if types
 
-      return get('/maps/api/place/autocomplete/json', params)[:results]
+      return get('/maps/api/place/autocomplete/json', params)[:predictions]
     end
   end
 end
