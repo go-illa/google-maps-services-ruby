@@ -4,7 +4,7 @@ module GoogleMapsService::Apis
 
   # Performs requests to the Google Maps Geocoding API.
   module Places
-    def places_autocomplete(address, components: nil, bounds: nil, region: nil, language: nil)
+    def places_autocomplete(input, components: nil, bounds: nil, region: nil, language: nil)
       params = {}
 
       params[:input] = input
