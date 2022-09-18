@@ -4,7 +4,7 @@ module GoogleMapsService::Apis
 
   # Performs requests to the Google Maps Geocoding API.
   module Places
-    def places_autocomplete(input, components: nil, bounds: nil, region: nil, language: nil)
+    def places_autocomplete(input, components: nil, bounds: nil, types: nil, region: nil, language: nil)
       params = {}
 
       params[:input] = input
@@ -12,7 +12,7 @@ module GoogleMapsService::Apis
       params[:bounds] = GoogleMapsService::Convert.bounds(bounds) if bounds
       params[:region] = region if region
       params[:language] = language if language
-      params[:types] = "geocode"
+      params[:types] = types if types
 
       return get('/maps/api/place/autocomplete/json', params)[:results]
     end
