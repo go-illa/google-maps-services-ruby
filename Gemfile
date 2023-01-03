@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.7.5'
+ruby '3.0.1'
 
 # Specify your gem's dependencies in google_maps_service.gemspec
 gemspec

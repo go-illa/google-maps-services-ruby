@@ -17,11 +17,37 @@ module GoogleMapsService
 
     # The response redirects to another URL.
     class RedirectError < BaseError
+      ERRORS_3XX = {
+        '300' => 'Multiple Choices',
+        '301' => 'Moved Permanently',
+        '302' => 'Found',
+        '303' => 'See Other',
+        '304' => 'Not Modified',
+        '305' => 'Use Proxy',
+        '306' => 'Switch Proxy',
+        '307' => 'Temporary Redirect',
+        '308' => 'Permanent Redirect'
+      }
     end
 
     # A 4xx class HTTP error occurred.
     # The request is invalid and should not be retried without modification.
     class ClientError < BaseError
+      ERRORS_4XX = {
+        '400' => 'Bad Request',
+        '401' => 'Unauthorized',
+        '402' => 'Payment Required',
+        '403' => 'Forbidden',
+        '404' => 'Not Found',
+        '405' => 'Method Not Allowed',
+        '406' => 'Not Acceptable',
+        '407' => 'Proxy Authentication Required',
+        '408' => 'Request Timeout',
+        '409' => 'Conflict',
+        '415' => 'Unsupported Media Type',
+        '422' => 'Unprocessable Entity',
+        '429' => 'Too Many Requests'
+      }
     end
 
     # A 5xx class HTTP error occurred.
