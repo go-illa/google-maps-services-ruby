@@ -4,10 +4,10 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'google_maps_service/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'google_maps_service'
+  spec.name          = 'google_map_services'
   spec.version       = GoogleMapsService::VERSION
-  spec.authors       = ['Edward Samuel Pasaribu']
-  spec.email         = ['edwardsamuel92@gmail.com']
+  spec.authors       = ['Edward Samuel Pasaribu', 'Ahmed Abdelhamid']
+  spec.email         = ['edwardsamuel92@gmail.com', 'eng.a.abdelhamid@outlook.com']
 
   spec.summary       = %q{Ruby gem for Google Maps Web Service APIs }
   spec.homepage      = %q{https://github.com/go-illa/google-maps-services-ruby}
