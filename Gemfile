@@ -6,7 +6,7 @@ ruby '2.7.5'
 gemspec
 
 group :development do
-  gem 'bundler', '~> 2.1'
+  gem 'bundler', '~> 2.3'
   gem 'rake', '~> 12.0'
   gem 'rspec', '~> 3.3'
   gem 'simplecov', '~> 0.12'
