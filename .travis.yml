@@ -1,19 +1,16 @@
 language: ruby
 before_install:
   - rm -rf Gemfile.lock
-  - rvm install 2.7.5
-  - rvm 2.7.5 --default
+  - rvm install 3.0.1
+  - rvm 3.0.1 --default
   - gem install bundler -v 2.3.26
   - bundle _2.3.26_ install --jobs=3 --retry=3
 rvm:
   - ruby-head
-  - 2.7.5
+  - 3.0.1
   - jruby-head
 script:
   - bundle exec rspec spec
-matrix:
-  allow_failures:
-    - rvm: jruby-head
 addons:
   apt:
     packages:
