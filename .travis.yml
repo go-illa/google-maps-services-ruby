@@ -1,13 +1,13 @@
 language: ruby
 before_install:
   - rm -rf Gemfile.lock
-  - rvm install 3.0.1
-  - rvm 3.0.1 --default
-  - gem install bundler -v 2.3.26
-  - bundle _2.3.26_ install --jobs=3 --retry=3
+  - rvm install 3.0.6
+  - rvm 3.0.6 --default
+  - gem install bundler -v 2.5.9
+  - bundle _2.5.9_ install --jobs=3 --retry=3
 rvm:
   - ruby-head
-  - 3.0.1
+  - 3.0.6
   - jruby-head
 script:
   - bundle exec rspec spec
