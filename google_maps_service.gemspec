@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'google_maps_service/version'
+require 'google_maps_apis/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'google_map_services'
-  spec.version       = GoogleMapsService::VERSION
+  spec.name          = 'google_maps_apis'
+  spec.version       = GoogleMapsApis::VERSION
   spec.authors       = ['Edward Samuel Pasaribu', 'Ahmed Abdelhamid']
   spec.email         = ['edwardsamuel92@gmail.com', 'eng.a.abdelhamid@outlook.com']
 

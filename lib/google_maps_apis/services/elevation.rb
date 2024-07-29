@@ -1,4 +1,4 @@
-module GoogleMapsService::Apis
+module GoogleMapsApis::Services
 
   # Performs requests to the Google Maps Elevation API.
   module Elevation
@@ -21,7 +21,7 @@ module GoogleMapsService::Apis
     # @return [Array] Array of elevation data responses
     def elevation(locations)
       params = {
-        locations: GoogleMapsService::Convert.waypoints(locations)
+        locations: GoogleMapsApis::Convert.waypoints(locations)
       }
 
       return get('/maps/api/elevation/json', params)[:results]
@@ -44,7 +44,7 @@ module GoogleMapsService::Apis
       if path.kind_of?(String)
         path = "enc:%s" % path
       else
-        path = GoogleMapsService::Convert.waypoints(path)
+        path = GoogleMapsApis::Convert.waypoints(path)
       end
 
       params = {

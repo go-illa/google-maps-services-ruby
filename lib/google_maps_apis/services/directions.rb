@@ -1,6 +1,6 @@
 require_relative '../validator'
 
-module GoogleMapsService::Apis
+module GoogleMapsApis::Services
 
   # Performs requests to the Google Maps Directions API.
   module Directions
@@ -66,33 +66,33 @@ module GoogleMapsService::Apis
         transit_routing_preference: nil)
 
       params = {
-        origin: GoogleMapsService::Convert.waypoint(origin),
-        destination: GoogleMapsService::Convert.waypoint(destination)
+        origin: GoogleMapsApis::Convert.waypoint(origin),
+        destination: GoogleMapsApis::Convert.waypoint(destination)
       }
 
-      params[:mode] = GoogleMapsService::Validator.travel_mode(mode) if mode
+      params[:mode] = GoogleMapsApis::Validator.travel_mode(mode) if mode
 
       if waypoints = waypoints
-        waypoints = GoogleMapsService::Convert.as_list(waypoints)
-        waypoints = waypoints.map { |waypoint| GoogleMapsService::Convert.waypoint(waypoint) }
+        waypoints = GoogleMapsApis::Convert.as_list(waypoints)
+        waypoints = waypoints.map { |waypoint| GoogleMapsApis::Convert.waypoint(waypoint) }
         waypoints = ['optimize:true'] + waypoints if optimize_waypoints
 
-        params[:waypoints] = GoogleMapsService::Convert.join_list("|", waypoints)
+        params[:waypoints] = GoogleMapsApis::Convert.join_list("|", waypoints)
       end
 
       params[:alternatives] = 'true' if alternatives
-      params[:avoid] = GoogleMapsService::Convert.join_list('|', avoid) if avoid
+      params[:avoid] = GoogleMapsApis::Convert.join_list('|', avoid) if avoid
       params[:language] = language if language
       params[:units] = units if units
       params[:region] = region if region
-      params[:departure_time] = GoogleMapsService::Convert.time(departure_time) if departure_time
-      params[:arrival_time] = GoogleMapsService::Convert.time(arrival_time) if arrival_time
+      params[:departure_time] = GoogleMapsApis::Convert.time(departure_time) if departure_time
+      params[:arrival_time] = GoogleMapsApis::Convert.time(arrival_time) if arrival_time
 
       if departure_time and arrival_time
         raise ArgumentError, 'Should not specify both departure_time and arrival_time.'
       end
 
-      params[:transit_mode] = GoogleMapsService::Convert.join_list("|", transit_mode) if transit_mode
+      params[:transit_mode] = GoogleMapsApis::Convert.join_list("|", transit_mode) if transit_mode
       params[:transit_routing_preference] = transit_routing_preference if transit_routing_preference
 
       return get('/maps/api/directions/json', params)[:routes]

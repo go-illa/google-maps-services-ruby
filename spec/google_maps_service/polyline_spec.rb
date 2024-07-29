@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'date'
 
-describe GoogleMapsService::Polyline do
+describe GoogleMapsApis::Polyline do
   context '.decode' do
     context 'with Sydney to Melbourne polyline' do
       let (:decoded_points) do
@@ -30,7 +30,7 @@ describe GoogleMapsService::Polyline do
                          "vuFlhB|sN`_@fvBp`CxhCt_@loDsS|eDlmChgFlqCbjCxk@vbGxm" \
                          "CjbMba@rpBaoClcCk_DhgEzYdzBl\\vsA_JfGztAbShkGtEhlDzh" \
                          "C~w@hnB{e@yF}`D`_Ayx@~vGqn@l}CafC")
-        GoogleMapsService::Polyline.decode(syd_mel_route)
+        GoogleMapsApis::Polyline.decode(syd_mel_route)
       end
 
       it 'should start in Sydney' do
@@ -50,8 +50,8 @@ describe GoogleMapsService::Polyline do
       it 'should be same as original polyline' do
         test_polyline = ("gcneIpgxzRcDnBoBlEHzKjBbHlG`@`IkDxIi" \
                          "KhKoMaLwTwHeIqHuAyGXeB~Ew@fFjAtIzExF")
-        points = GoogleMapsService::Polyline.decode(test_polyline)
-        actual_polyline = GoogleMapsService::Polyline.encode(points)
+        points = GoogleMapsApis::Polyline.decode(test_polyline)
+        actual_polyline = GoogleMapsApis::Polyline.encode(points)
         expect(actual_polyline).to eq (test_polyline)
       end
     end

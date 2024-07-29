@@ -1,6 +1,6 @@
-require 'google_maps_service/convert'
+require 'google_maps_apis/convert'
 
-module GoogleMapsService
+module GoogleMapsApis
 
   # Encoder/decoder for [Google Encoded Polyline](https://developers.google.com/maps/documentation/utilities/polylinealgorithm).
   module Polyline
@@ -13,7 +13,7 @@ module GoogleMapsService
     #
     # @example
     #   encoded_path = '_p~iF~ps|U_ulLnnqC_mqNvxq`@'
-    #   path = GoogleMapsService::Polyline.decode(encoded_path)
+    #   path = GoogleMapsApis::Polyline.decode(encoded_path)
     #   #=> [{:lat=>38.5, :lng=>-120.2}, {:lat=>40.7, :lng=>-120.95}, {:lat=>43.252, :lng=>-126.45300000000002}]
     #
     # @param [String] polyline An encoded polyline
@@ -65,7 +65,7 @@ module GoogleMapsService
       result = ""
 
       points.each do |point|
-        ll = GoogleMapsService::Convert.normalize_latlng(point)
+        ll = GoogleMapsApis::Convert.normalize_latlng(point)
         lat = (ll[0] * 1e5).round.to_i
         lng = (ll[1] * 1e5).round.to_i
         d_lat = lat - last_lat

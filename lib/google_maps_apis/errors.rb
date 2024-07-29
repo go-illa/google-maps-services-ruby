@@ -1,4 +1,4 @@
-module GoogleMapsService
+module GoogleMapsApis
   # Specific Google Maps Service error
   module Error
     # Base error, capable of wrapping another

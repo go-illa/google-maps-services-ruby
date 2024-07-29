@@ -1,7 +1,7 @@
 require 'base64'
 require 'uri'
 
-module GoogleMapsService
+module GoogleMapsApis
 
   # Helper for handling URL.
   module Url

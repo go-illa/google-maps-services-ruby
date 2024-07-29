@@ -1,6 +1,6 @@
 require 'date'
 
-module GoogleMapsService::Apis
+module GoogleMapsApis::Services
 
   # Performs requests to the Google Maps TimeZone API."""
   module TimeZone
@@ -25,8 +25,8 @@ module GoogleMapsService::Apis
     #
     # @return [Hash] Time zone object.
     def timezone(location, timestamp: Time.now, language: nil)
-      location = GoogleMapsService::Convert.latlng(location)
-      timestamp = GoogleMapsService::Convert.time(timestamp)
+      location = GoogleMapsApis::Convert.latlng(location)
+      timestamp = GoogleMapsApis::Convert.time(timestamp)
 
       params = {
         location: location,

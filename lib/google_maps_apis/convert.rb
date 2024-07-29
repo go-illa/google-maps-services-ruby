@@ -1,4 +1,4 @@
-module GoogleMapsService
+module GoogleMapsApis
 
   # Converts Ruby types to string representations suitable for Maps API server.
   module Convert
@@ -7,7 +7,7 @@ module GoogleMapsService
     # Converts a lat/lon pair to a comma-separated string.
     #
     # @example
-    #   >> GoogleMapsService::Convert.latlng({"lat": -33.8674869, "lng": 151.2069902})
+    #   >> GoogleMapsApis::Convert.latlng({"lat": -33.8674869, "lng": 151.2069902})
     #   => "-33.867487,151.206990"
     #
     # @param [Hash, Array] arg The lat/lon hash or array pair.
@@ -68,7 +68,7 @@ module GoogleMapsService
     # Converts the value into a unix time (seconds since unix epoch).
     #
     # @example
-    #   >> GoogleMapsService::Convert.time(datetime.now())
+    #   >> GoogleMapsApis::Convert.time(datetime.now())
     #   => "1409810596"
     #
     # @param [Time, Date, DateTime, Integer] arg The time.
@@ -85,7 +85,7 @@ module GoogleMapsService
     # server.
     #
     # @example
-    #   >> GoogleMapsService::Convert.components({"country": "US", "postal_code": "94043"})
+    #   >> GoogleMapsApis::Convert.components({"country": "US", "postal_code": "94043"})
     #   => "country:US|postal_code:94043"
     #
     # @param [Hash] arg The component filter.
@@ -120,7 +120,7 @@ module GoogleMapsService
     #   ?>     "lng": 150.502229
     #   ?>   }
     #   ?> }
-    #   >> GoogleMapsService::Convert.bounds(sydney_bounds)
+    #   >> GoogleMapsApis::Convert.bounds(sydney_bounds)
     #   => '-34.169249,150.502229|-33.424598,151.342636'
     #
     # @param [Hash] arg The bounds.
@@ -150,7 +150,7 @@ module GoogleMapsService
       if waypoint.kind_of?(String)
         return waypoint
       end
-      return GoogleMapsService::Convert.latlng(waypoint)
+      return GoogleMapsApis::Convert.latlng(waypoint)
     end
 
     # Converts an array of waypoints (path) to the format expected by the Google Maps

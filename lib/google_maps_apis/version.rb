@@ -1,5 +1,5 @@
-module GoogleMapsService
-  # GoogleMapsService gem version
+module GoogleMapsApis
+  # GoogleMapsApis gem version
   VERSION = '0.1.0.1'
 
   # Current operating system

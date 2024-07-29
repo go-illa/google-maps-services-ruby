@@ -1,6 +1,6 @@
 require_relative './convert'
 
-module GoogleMapsService
+module GoogleMapsApis
 
   # Validate value that is accepted by Google Maps.
   module Validator

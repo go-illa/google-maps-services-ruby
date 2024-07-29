@@ -1,6 +1,6 @@
-require 'google_maps_service/convert'
+require 'google_maps_apis/convert'
 
-module GoogleMapsService::Apis
+module GoogleMapsApis::Services
 
   # Performs requests to the Google Maps Geocoding API.
   module Places
@@ -8,8 +8,8 @@ module GoogleMapsService::Apis
       params = {}
 
       params[:input] = input
-      params[:components] = GoogleMapsService::Convert.components(components) if components
-      params[:bounds] = GoogleMapsService::Convert.bounds(bounds) if bounds
+      params[:components] = GoogleMapsApis::Convert.components(components) if components
+      params[:bounds] = GoogleMapsApis::Convert.bounds(bounds) if bounds
       params[:region] = region if region
       params[:language] = language if language
       params[:types] = types if types

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe GoogleMapsService::Apis::Roads do
+describe GoogleMapsApis::Services::Roads do
   include_context 'HTTP client'
 
   context '#snap_to_roads' do
@@ -95,7 +95,7 @@ describe GoogleMapsService::Apis::Roads do
   context 'error handling' do
     context 'with client_id and client_secret' do
       let(:client) do
-        GoogleMapsService::Client.new(client_id: 'asdf', client_secret: 'asdf')
+        GoogleMapsApis::Client.new(client_id: 'asdf', client_secret: 'asdf')
       end
 
       it 'should raise ArgumentError' do
@@ -109,8 +109,8 @@ describe GoogleMapsService::Apis::Roads do
           .to_return(:status => 200, body: 'Unknown format.')
       end
 
-      it 'should raise GoogleMapsService::Error::ApiError' do
-        expect { client.speed_limits([]) }.to raise_error GoogleMapsService::Error::ApiError
+      it 'should raise GoogleMapsApis::Error::ApiError' do
+        expect { client.speed_limits([]) }.to raise_error GoogleMapsApis::Error::ApiError
       end
     end
 
@@ -120,8 +120,8 @@ describe GoogleMapsService::Apis::Roads do
           .to_return(:status => 400, headers: { 'Content-Type' => 'application/json' }, body: '{"speedLimits":[]}')
       end
 
-      it 'should raise GoogleMapsService::Error::ApiError' do
-        expect { client.speed_limits([]) }.to raise_error GoogleMapsService::Error::ApiError
+      it 'should raise GoogleMapsApis::Error::ApiError' do
+        expect { client.speed_limits([]) }.to raise_error GoogleMapsApis::Error::ApiError
       end
     end
 
@@ -140,8 +140,8 @@ EOF
           .to_return(:status => 400, body: json)
       end
 
-      it 'should raise GoogleMapsService::Error::InvalidRequestError' do
-        expect { client.speed_limits('aChIJqaknMTeuEmsRUYCD5Wd9ARM') }.to raise_error GoogleMapsService::Error::InvalidRequestError
+      it 'should raise GoogleMapsApis::Error::InvalidRequestError' do
+        expect { client.speed_limits('aChIJqaknMTeuEmsRUYCD5Wd9ARM') }.to raise_error GoogleMapsApis::Error::InvalidRequestError
       end
     end
 
@@ -160,8 +160,8 @@ EOF
           .to_return(:status => 400, body: json)
       end
 
-      it 'should raise GoogleMapsService::Error::RequestDeniedError' do
-        expect { client.speed_limits('aChIJqaknMTeuEmsRUYCD5Wd9ARM') }.to raise_error GoogleMapsService::Error::RequestDeniedError
+      it 'should raise GoogleMapsApis::Error::RequestDeniedError' do
+        expect { client.speed_limits('aChIJqaknMTeuEmsRUYCD5Wd9ARM') }.to raise_error GoogleMapsApis::Error::RequestDeniedError
       end
     end
 
@@ -180,8 +180,8 @@ EOF
           .to_return(:status => 403, body: json)
       end
 
-      it 'should raise GoogleMapsService::Error::RequestDeniedError' do
-        expect { client.speed_limits('aChIJqaknMTeuEmsRUYCD5Wd9ARM') }.to raise_error GoogleMapsService::Error::RequestDeniedError
+      it 'should raise GoogleMapsApis::Error::RequestDeniedError' do
+        expect { client.speed_limits('aChIJqaknMTeuEmsRUYCD5Wd9ARM') }.to raise_error GoogleMapsApis::Error::RequestDeniedError
       end
     end
 
@@ -200,8 +200,8 @@ EOF
           .to_return(:status => 429, body: json)
       end
 
-      it 'should raise GoogleMapsService::Error::RateLimitError' do
-        expect { client.speed_limits('aChIJqaknMTeuEmsRUYCD5Wd9ARM') }.to raise_error GoogleMapsService::Error::RateLimitError
+      it 'should raise GoogleMapsApis::Error::RateLimitError' do
+        expect { client.speed_limits('aChIJqaknMTeuEmsRUYCD5Wd9ARM') }.to raise_error GoogleMapsApis::Error::RateLimitError
       end
     end
 
@@ -220,8 +220,8 @@ EOF
           .to_return(:status => 400, body: json)
       end
 
-      it 'should raise GoogleMapsService::Error::ApiError' do
-        expect { client.speed_limits('aChIJqaknMTeuEmsRUYCD5Wd9ARM') }.to raise_error GoogleMapsService::Error::ApiError
+      it 'should raise GoogleMapsApis::Error::ApiError' do
+        expect { client.speed_limits('aChIJqaknMTeuEmsRUYCD5Wd9ARM') }.to raise_error GoogleMapsApis::Error::ApiError
       end
     end
 
@@ -239,8 +239,8 @@ EOF
           .to_return(:status => 400, body: json)
       end
 
-      it 'should raise GoogleMapsService::Error::ApiError' do
-        expect { client.speed_limits('aChIJqaknMTeuEmsRUYCD5Wd9ARM') }.to raise_error GoogleMapsService::Error::ApiError
+      it 'should raise GoogleMapsApis::Error::ApiError' do
+        expect { client.speed_limits('aChIJqaknMTeuEmsRUYCD5Wd9ARM') }.to raise_error GoogleMapsApis::Error::ApiError
       end
     end
   end

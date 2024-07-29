@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe GoogleMapsService::Apis::Directions do
+describe GoogleMapsApis::Services::Directions do
   include_context 'HTTP client'
 
   before(:example) do
@@ -77,12 +77,12 @@ describe GoogleMapsService::Apis::Directions do
         .to_return(:status => 200, headers: { 'Content-Type' => 'application/json' }, body: '{"results": [], "status": "NOT_FOUND"}')
     end
 
-    it 'should raise GoogleMapsService::Error::NotFoundError' do
+    it 'should raise GoogleMapsApis::Error::NotFoundError' do
       expect { client.directions('dsfdsfdsfdsfdsfadsfdrcgtzvhstrvzstrhstrgcrscgtr', 'Sydney Town Hall',
-                                mode: 'driving') }.to raise_error GoogleMapsService::Error::NotFoundError
+                                mode: 'driving') }.to raise_error GoogleMapsApis::Error::NotFoundError
     end
   end
-  
+
   context 'travel mode round trip' do
     it 'should call Google Maps Web Service' do
       routes = client.directions('Town Hall, Sydney', 'Parramatta, NSW',

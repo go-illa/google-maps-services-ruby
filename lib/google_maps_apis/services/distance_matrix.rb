@@ -1,6 +1,6 @@
 require_relative '../validator'
 
-module GoogleMapsService::Apis
+module GoogleMapsApis::Services
 
   # Performs requests to the Google Maps Distance Matrix API.
   module DistanceMatrix
@@ -60,23 +60,23 @@ module GoogleMapsService::Apis
         departure_time: nil, arrival_time: nil, transit_mode: nil,
         transit_routing_preference: nil)
       params = {
-        origins: GoogleMapsService::Convert.waypoints(origins),
-        destinations: GoogleMapsService::Convert.waypoints(destinations)
+        origins: GoogleMapsApis::Convert.waypoints(origins),
+        destinations: GoogleMapsApis::Convert.waypoints(destinations)
       }
 
       params[:language] = language if language
-      params[:mode] = GoogleMapsService::Validator.travel_mode(mode) if mode
-      params[:avoid] = GoogleMapsService::Validator.avoid(avoid) if avoid
+      params[:mode] = GoogleMapsApis::Validator.travel_mode(mode) if mode
+      params[:avoid] = GoogleMapsApis::Validator.avoid(avoid) if avoid
 
       params[:units] = units if units
-      params[:departure_time] = GoogleMapsService::Convert.time(departure_time) if departure_time
-      params[:arrival_time] = GoogleMapsService::Convert.time(arrival_time) if arrival_time
+      params[:departure_time] = GoogleMapsApis::Convert.time(departure_time) if departure_time
+      params[:arrival_time] = GoogleMapsApis::Convert.time(arrival_time) if arrival_time
 
       if departure_time and arrival_time
         raise ArgumentError, 'Should not specify both departure_time and arrival_time.'
       end
 
-      params[:transit_mode] = GoogleMapsService::Convert.join_list('|', transit_mode) if transit_mode
+      params[:transit_mode] = GoogleMapsApis::Convert.join_list('|', transit_mode) if transit_mode
       params[:transit_routing_preference] = transit_routing_preference if transit_routing_preference
 
       return get('/maps/api/distancematrix/json', params)

@@ -1,6 +1,6 @@
 require 'multi_json'
 
-module GoogleMapsService::Apis
+module GoogleMapsApis::Services
 
   # Performs requests to the Google Maps Roads API.
   module Roads
@@ -36,7 +36,7 @@ module GoogleMapsService::Apis
     #
     # @return [Array] Array of snapped points.
     def snap_to_roads(path, interpolate: false)
-      path = GoogleMapsService::Convert.waypoints(path)
+      path = GoogleMapsApis::Convert.waypoints(path)
 
       params = {
         path: path
@@ -64,7 +64,7 @@ module GoogleMapsService::Apis
     #
     # @return [Array] Array of speed limits.
     def speed_limits(place_ids)
-      params = GoogleMapsService::Convert.as_list(place_ids).map { |place_id| ['placeId', place_id] }
+      params = GoogleMapsApis::Convert.as_list(place_ids).map { |place_id| ['placeId', place_id] }
 
       return get('/v1/speedLimits', params,
                  base_url: ROADS_BASE_URL,
@@ -92,7 +92,7 @@ module GoogleMapsService::Apis
     # @return [Hash] A hash with both a list of speed limits and a list of the snapped
     #         points.
     def snapped_speed_limits(path)
-      path = GoogleMapsService::Convert.waypoints(path)
+      path = GoogleMapsApis::Convert.waypoints(path)
 
       params = {
         path: path
@@ -126,7 +126,7 @@ module GoogleMapsService::Apis
     # @return [Array] Array of snapped points.
 
     def nearest_roads(points)
-      points = GoogleMapsService::Convert.waypoints(points)
+      points = GoogleMapsApis::Convert.waypoints(points)
 
       params = {
         points: points
@@ -149,13 +149,13 @@ module GoogleMapsService::Apis
           unless response.status == 200
             check_response_status(response)
           end
-          raise GoogleMapsService::Error::ApiError.new(response), 'Received a malformed response.'
+          raise GoogleMapsApis::Error::ApiError.new(response), 'Received a malformed response.'
         end
 
         check_roads_body_error(response, body)
 
         unless response.status == 200
-          raise GoogleMapsService::Error::ApiError.new(response)
+          raise GoogleMapsApis::Error::ApiError.new(response)
         end
         return body
       end
@@ -171,15 +171,15 @@ module GoogleMapsService::Apis
         case error[:status]
           when 'INVALID_ARGUMENT'
             if error[:message] == 'The provided API key is invalid.'
-              raise GoogleMapsService::Error::RequestDeniedError.new(response), error[:message]
+              raise GoogleMapsApis::Error::RequestDeniedError.new(response), error[:message]
             end
-            raise GoogleMapsService::Error::InvalidRequestError.new(response), error[:message]
+            raise GoogleMapsApis::Error::InvalidRequestError.new(response), error[:message]
           when 'PERMISSION_DENIED'
-            raise GoogleMapsService::Error::RequestDeniedError.new(response), error[:message]
+            raise GoogleMapsApis::Error::RequestDeniedError.new(response), error[:message]
           when 'RESOURCE_EXHAUSTED'
-            raise GoogleMapsService::Error::RateLimitError.new(response), error[:message]
+            raise GoogleMapsApis::Error::RateLimitError.new(response), error[:message]
           else
-            raise GoogleMapsService::Error::ApiError.new(response), error[:message]
+            raise GoogleMapsApis::Error::ApiError.new(response), error[:message]
         end
       end
 

@@ -3,18 +3,18 @@ require 'faraday'
 require 'multi_json'
 require 'thread'
 
-require 'google_maps_service/errors'
-require 'google_maps_service/convert'
-require 'google_maps_service/url'
-require 'google_maps_service/apis/directions'
-require 'google_maps_service/apis/distance_matrix'
-require 'google_maps_service/apis/elevation'
-require 'google_maps_service/apis/geocoding'
-require 'google_maps_service/apis/roads'
-require 'google_maps_service/apis/time_zone'
-require 'google_maps_service/apis/places'
+require 'google_maps_apis/errors'
+require 'google_maps_apis/convert'
+require 'google_maps_apis/url'
+require 'google_maps_apis/services/directions'
+require 'google_maps_apis/services/distance_matrix'
+require 'google_maps_apis/services/elevation'
+require 'google_maps_apis/services/geocoding'
+require 'google_maps_apis/services/roads'
+require 'google_maps_apis/services/time_zone'
+require 'google_maps_apis/services/places'
 
-module GoogleMapsService
+module GoogleMapsApis
 
   # Core client functionality, common across all API requests (including performing
   # HTTP requests).
@@ -23,15 +23,15 @@ module GoogleMapsService
     DEFAULT_BASE_URL = 'https://maps.googleapis.com'
 
     # Errors those could be retriable.
-    RETRIABLE_ERRORS = [GoogleMapsService::Error::ServerError, GoogleMapsService::Error::RateLimitError]
+    RETRIABLE_ERRORS = [GoogleMapsApis::Error::ServerError, GoogleMapsApis::Error::RateLimitError]
 
-    include GoogleMapsService::Apis::Directions
-    include GoogleMapsService::Apis::DistanceMatrix
-    include GoogleMapsService::Apis::Elevation
-    include GoogleMapsService::Apis::Geocoding
-    include GoogleMapsService::Apis::Roads
-    include GoogleMapsService::Apis::TimeZone
-    include GoogleMapsService::Apis::Places
+    include GoogleMapsApis::Services::Directions
+    include GoogleMapsApis::Services::DistanceMatrix
+    include GoogleMapsApis::Services::Elevation
+    include GoogleMapsApis::Services::Geocoding
+    include GoogleMapsApis::Services::Roads
+    include GoogleMapsApis::Services::TimeZone
+    include GoogleMapsApis::Services::Places
 
     # Secret key for accessing Google Maps Web Service.
     # Can be obtained at https://developers.google.com/maps/documentation/geocoding/get-api-key#key.
@@ -62,16 +62,16 @@ module GoogleMapsService
     # You can also directly get the `Hurley::Client` object via {#client} method.
     #
     # @example Setup API keys
-    #   gmaps = GoogleMapsService::Client.new(key: 'Add your key here')
+    #   gmaps = GoogleMapsApis::Client.new(key: 'Add your key here')
     #
     # @example Setup client IDs
-    #   gmaps = GoogleMapsService::Client.new(
+    #   gmaps = GoogleMapsApis::Client.new(
     #       client_id: 'Add your client id here',
     #       client_secret: 'Add your client secret here'
     #   )
     #
     # @example Setup time out and QPS limit
-    #   gmaps = GoogleMapsService::Client.new(
+    #   gmaps = GoogleMapsApis::Client.new(
     #       key: 'Add your key here',
     #       retry_timeout: 20,
     #       queries_per_second: 10
@@ -81,7 +81,7 @@ module GoogleMapsService
     #   request_options = Hurley::RequestOptions.new
     #   request_options.proxy = Hurley::Url.parse 'http://user:password@proxy.example.com:3128'
     #
-    #   gmaps = GoogleMapsService::Client.new(
+    #   gmaps = GoogleMapsApis::Client.new(
     #       key: 'Add your key here',
     #       request_options: request_options
     #   )
@@ -90,7 +90,7 @@ module GoogleMapsService
     #  require 'hurley-excon'       # https://github.com/lostisland/hurley-excon
     #  require 'hurley/http_cache'  # https://github.com/plataformatec/hurley-http-cache
     #
-    #  gmaps = GoogleMapsService::Client.new(
+    #  gmaps = GoogleMapsApis::Client.new(
     #      key: 'Add your key here',
     #      connection: Hurley::HttpCache.new(HurleyExcon::Connection.new)
     #  )
@@ -113,7 +113,7 @@ module GoogleMapsService
       [:key, :client_id, :client_secret,
           :retry_timeout, :queries_per_second,
           :request_options, :ssl_options, :connection].each do |key|
-        self.instance_variable_set("@#{key}".to_sym, options[key] || GoogleMapsService.instance_variable_get("@#{key}"))
+        self.instance_variable_set("@#{key}".to_sym, options[key] || GoogleMapsApis.instance_variable_get("@#{key}"))
       end
 
       initialize_query_tickets
@@ -156,8 +156,8 @@ module GoogleMapsService
     # @return [String]
     def user_agent
       sprintf('google-maps-services-ruby/%s %s',
-              GoogleMapsService::VERSION,
-              GoogleMapsService::OS_VERSION)
+              GoogleMapsApis::VERSION,
+              GoogleMapsApis::OS_VERSION)
     end
 
     # Make API call.
@@ -223,14 +223,14 @@ module GoogleMapsService
       if accepts_client_id and @client_id and @client_secret
         params << ["client", @client_id]
 
-        path = [path, GoogleMapsService::Url.urlencode_params(params)].join("?")
-        sig = GoogleMapsService::Url.sign_hmac(@client_secret, path)
+        path = [path, GoogleMapsApis::Url.urlencode_params(params)].join("?")
+        sig = GoogleMapsApis::Url.sign_hmac(@client_secret, path)
         return path + "&signature=" + sig
       end
 
       if @key
         params << ["key", @key]
-        return path + "?" + GoogleMapsService::Url.urlencode_params(params)
+        return path + "?" + GoogleMapsApis::Url.urlencode_params(params)
       end
 
       raise ArgumentError, "Must provide API key for this API. It does not accept enterprise credentials."
@@ -256,15 +256,15 @@ module GoogleMapsService
       when 200..300
         # Do-nothing
       when 301...308
-        raise GoogleMapsService::Error::RedirectError.new(response),
-          (GoogleMapsService::Error::RedirectError::ERRORS_3XX[response.status.to_s] + sprintf('Redirect to %s', response.headers[:location]))
+        raise GoogleMapsApis::Error::RedirectError.new(response),
+          (GoogleMapsApis::Error::RedirectError::ERRORS_3XX[response.status.to_s] + sprintf('Redirect to %s', response.headers[:location]))
       when 400...409,415,422,429
-        raise GoogleMapsService::Error::ClientError.new(response),
-          GoogleMapsService::Error::ClientError::ERRORS_4XX[response.status.to_s]
+        raise GoogleMapsApis::Error::ClientError.new(response),
+          GoogleMapsApis::Error::ClientError::ERRORS_4XX[response.status.to_s]
       when 410...500
-        raise GoogleMapsService::Error::ClientError.new(response), 'Invalid request'
+        raise GoogleMapsApis::Error::ClientError.new(response), 'Invalid request'
       when 500..600
-        raise GoogleMapsService::Error::ServerError.new(response), 'Server error'
+        raise GoogleMapsApis::Error::ServerError.new(response), 'Server error'
       end
     end
 
@@ -279,15 +279,15 @@ module GoogleMapsService
       when 'OK', 'ZERO_RESULTS'
         # Do-nothing
       when 'OVER_QUERY_LIMIT'
-        raise GoogleMapsService::Error::RateLimitError.new(response), body[:error_message]
+        raise GoogleMapsApis::Error::RateLimitError.new(response), body[:error_message]
       when 'REQUEST_DENIED'
-        raise GoogleMapsService::Error::RequestDeniedError.new(response), body[:error_message]
+        raise GoogleMapsApis::Error::RequestDeniedError.new(response), body[:error_message]
       when 'INVALID_REQUEST'
-        raise GoogleMapsService::Error::InvalidRequestError.new(response), body[:error_message]
+        raise GoogleMapsApis::Error::InvalidRequestError.new(response), body[:error_message]
       when 'NOT_FOUND'
-        raise GoogleMapsService::Error::NotFoundError.new(response), (body[:error_message] || 'ADDRESS NOT FOUND')
+        raise GoogleMapsApis::Error::NotFoundError.new(response), (body[:error_message] || 'ADDRESS NOT FOUND')
       else
-        raise GoogleMapsService::Error::ApiError.new(response), body[:error_message]
+        raise GoogleMapsApis::Error::ApiError.new(response), body[:error_message]
       end
     end
   end

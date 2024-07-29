@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe GoogleMapsService::Client do
+describe GoogleMapsApis::Client do
   include_context 'HTTP client'
 
   # This test assumes that the time to run a mocked query is
@@ -11,7 +11,7 @@ describe GoogleMapsService::Client do
     let(:queries_per_second) { 3 }
     let(:total_request) { queries_per_second * 2 }
     let(:client)  do
-      GoogleMapsService::Client.new(key: api_key, queries_per_second: queries_per_second)
+      GoogleMapsApis::Client.new(key: api_key, queries_per_second: queries_per_second)
     end
 
     before(:example) do
@@ -31,18 +31,18 @@ describe GoogleMapsService::Client do
 
   context 'with global parameters' do
     before(:example) do
-      GoogleMapsService.configure do |config|
+      GoogleMapsApis.configure do |config|
         config.key = 'AIZaGLOBAL'
       end
     end
 
     it 'should take global parameters' do
-      client = GoogleMapsService::Client.new
+      client = GoogleMapsApis::Client.new
       expect(client.key).to eq('AIZaGLOBAL')
     end
 
     after(:example) do
-      GoogleMapsService.configure do |config|
+      GoogleMapsApis.configure do |config|
         config.key = nil
       end
     end
@@ -50,7 +50,7 @@ describe GoogleMapsService::Client do
 
   context 'with client id and secret' do
     let(:client) do
-      client = GoogleMapsService::Client.new(client_id: 'foo', client_secret: 'a2V5')
+      client = GoogleMapsApis::Client.new(client_id: 'foo', client_secret: 'a2V5')
     end
 
     before(:example) do
@@ -67,14 +67,14 @@ describe GoogleMapsService::Client do
   context 'error handling' do
     context 'without api key and client secret pair' do
       it 'should raise ArgumentError' do
-        client = GoogleMapsService::Client.new
+        client = GoogleMapsApis::Client.new
         expect { client.directions("Sydney", "Melbourne") }.to raise_error ArgumentError
       end
     end
 
     context 'with invalid api key' do
       let(:client) do
-        client = GoogleMapsService::Client.new(key: "AIzaINVALID")
+        client = GoogleMapsApis::Client.new(key: "AIzaINVALID")
       end
 
       before(:example) do
@@ -89,8 +89,8 @@ EOF
           .to_return(:status => 200, headers: { 'Content-Type' => 'application/json' }, body: json)
       end
 
-      it 'should raise GoogleMapsService::Error::RequestDeniedError' do
-        expect { client.directions("Sydney", "Melbourne") }.to raise_error GoogleMapsService::Error::RequestDeniedError
+      it 'should raise GoogleMapsApis::Error::RequestDeniedError' do
+        expect { client.directions("Sydney", "Melbourne") }.to raise_error GoogleMapsApis::Error::RequestDeniedError
       end
     end
 
@@ -113,8 +113,8 @@ EOF
           .to_return(:status => 200, headers: { 'Content-Type' => 'application/json' }, body: '{"status":"UNKNOWN_ERROR"}')
       end
 
-      it 'should raise GoogleMapsService::Error::ApiError' do
-        expect { client.geocode('Sydney') }.to raise_error GoogleMapsService::Error::ApiError
+      it 'should raise GoogleMapsApis::Error::ApiError' do
+        expect { client.geocode('Sydney') }.to raise_error GoogleMapsApis::Error::ApiError
       end
     end
 
@@ -137,8 +137,8 @@ EOF
           .to_return(:status => 500, body: 'Internal server error.')
       end
 
-      it 'should raise GoogleMapsService::Error::ServerError' do
-        expect { client.geocode('Sydney') }.to raise_error GoogleMapsService::Error::ServerError
+      it 'should raise GoogleMapsApis::Error::ServerError' do
+        expect { client.geocode('Sydney') }.to raise_error GoogleMapsApis::Error::ServerError
       end
     end
 
@@ -148,8 +148,8 @@ EOF
           .to_return(:status => 401, body: 'Unauthorized.')
       end
 
-      it 'should raise GoogleMapsService::Error::ClientError' do
-        expect { client.geocode('Sydney') }.to raise_error GoogleMapsService::Error::ClientError
+      it 'should raise GoogleMapsApis::Error::ClientError' do
+        expect { client.geocode('Sydney') }.to raise_error GoogleMapsApis::Error::ClientError
       end
     end
 
@@ -159,8 +159,8 @@ EOF
           .to_return(:status => 400, body: 'Bad request.')
       end
 
-      it 'should raise GoogleMapsService::Error::ClientError' do
-        expect { client.geocode('Sydney') }.to raise_error GoogleMapsService::Error::ClientError
+      it 'should raise GoogleMapsApis::Error::ClientError' do
+        expect { client.geocode('Sydney') }.to raise_error GoogleMapsApis::Error::ClientError
       end
     end
 
@@ -170,8 +170,8 @@ EOF
           .to_return(:status => 301, headers: { 'location' => 'https://maps2.googleapis.com' } )
       end
 
-      it 'should raise GoogleMapsService::Error::RedirectError' do
-        expect { client.geocode('Sydney') }.to raise_error GoogleMapsService::Error::RedirectError
+      it 'should raise GoogleMapsApis::Error::RedirectError' do
+        expect { client.geocode('Sydney') }.to raise_error GoogleMapsApis::Error::RedirectError
       end
     end
 

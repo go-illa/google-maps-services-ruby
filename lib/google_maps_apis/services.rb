@@ -1,6 +1,6 @@
-module GoogleMapsService
+module GoogleMapsApis
 
   # Collections of Google Maps Web Services
-  module Apis
+  module Services
   end
 end

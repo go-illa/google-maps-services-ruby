@@ -1,6 +1,6 @@
 # Ruby gem for Google Maps APIs
 
-[![Gem Version](https://badge.fury.io/rb/google_maps_service.svg)](http://badge.fury.io/rb/google_maps_service) [![Build Status](https://travis-ci.org/edwardsamuel/google-maps-services-ruby.svg?branch=master)](https://travis-ci.org/edwardsamuel/google-maps-services-ruby) [![Dependency Status](https://gemnasium.com/edwardsamuel/google-maps-services-ruby.svg)](https://gemnasium.com/edwardsamuel/google-maps-services-ruby) [![Code Climate](https://codeclimate.com/github/edwardsamuel/google-maps-services-ruby/badges/gpa.svg)](https://codeclimate.com/github/edwardsamuel/google-maps-services-ruby) [![Coverage Status](https://coveralls.io/repos/edwardsamuel/google-maps-services-ruby/badge.svg?branch=master&service=github)](https://coveralls.io/github/edwardsamuel/google-maps-services-ruby?branch=master) [![Inch CI](https://inch-ci.org/github/edwardsamuel/google-maps-services-ruby.svg?branch=master)](https://inch-ci.org/github/edwardsamuel/google-maps-services-ruby?branch=master)
+[![Gem Version](https://badge.fury.io/rb/google_maps_apis.svg)](http://badge.fury.io/rb/google_maps_apis) [![Build Status](https://travis-ci.org/edwardsamuel/google-maps-services-ruby.svg?branch=master)](https://travis-ci.org/edwardsamuel/google-maps-services-ruby) [![Dependency Status](https://gemnasium.com/edwardsamuel/google-maps-services-ruby.svg)](https://gemnasium.com/edwardsamuel/google-maps-services-ruby) [![Code Climate](https://codeclimate.com/github/edwardsamuel/google-maps-services-ruby/badges/gpa.svg)](https://codeclimate.com/github/edwardsamuel/google-maps-services-ruby) [![Coverage Status](https://coveralls.io/repos/edwardsamuel/google-maps-services-ruby/badge.svg?branch=master&service=github)](https://coveralls.io/github/edwardsamuel/google-maps-services-ruby?branch=master) [![Inch CI](https://inch-ci.org/github/edwardsamuel/google-maps-services-ruby.svg?branch=master)](https://inch-ci.org/github/edwardsamuel/google-maps-services-ruby?branch=master)
 
 ![Analytics](https://ga-beacon.appspot.com/UA-66926725-1/google-maps-services-ruby/readme?pixel)
 
@@ -87,7 +87,7 @@ Your API key should be 40 characters long, and begin with `AIza`.
 
 Add this line to your application's Gemfile:
 
-    gem 'google_maps_service'
+    gem 'google_maps_apis'
 
 And then execute:
 
@@ -95,34 +95,34 @@ And then execute:
 
 Or install it yourself as:
 
-    gem install google_maps_service
+    gem install google_maps_apis
 
 In your Ruby code, add this line to load this gem:
 
-    require 'google_maps_service'
+    require 'google_maps_apis'
 
 ## Usage
 
 Before you request Google Maps API, you must configure the client.
 
-You can view the [reference documentation](http://www.rubydoc.info/gems/google_maps_service).
+You can view the [reference documentation](http://www.rubydoc.info/gems/google_maps_apis).
 
 ### Configure client
 
 ```ruby
-require 'google_maps_service'
+require 'google_maps_apis'
 
 # Setup API keys
-gmaps = GoogleMapsService::Client.new(key: 'Add your key here')
+gmaps = GoogleMapsApis::Client.new(key: 'Add your key here')
 
 # Setup client IDs
-gmaps = GoogleMapsService::Client.new(
+gmaps = GoogleMapsApis::Client.new(
     client_id: 'Add your client id here',
     client_secret: 'Add your client secret here'
 )
 
 # More complex setup
-gmaps = GoogleMapsService::Client.new(
+gmaps = GoogleMapsApis::Client.new(
     key: 'Add your key here',
     retry_timeout: 20,      # Timeout for retrying failed request
     queries_per_second: 10  # Limit total request per second
@@ -131,20 +131,20 @@ gmaps = GoogleMapsService::Client.new(
 You can also set up the client globally.
 
 ```ruby
-require 'google_maps_service'
+require 'google_maps_apis'
 
 # Setup global parameters
-GoogleMapsService.configure do |config|
+GoogleMapsApis.configure do |config|
   config.key = 'Add your key here'
   config.retry_timeout = 20
   config.queries_per_second = 10
 end
 
 # Initialize client using global parameters
-gmaps = GoogleMapsService::Client.new
+gmaps = GoogleMapsApis::Client.new
 ```
 
-For more examples and detail (setup **proxy**, **timeout**, **caching**, etc.) while initializing the client, check out [Client documentation](http://www.rubydoc.info/gems/google_maps_service/GoogleMapsService/Apis/Client#initialize-instance_method).
+For more examples and detail (setup **proxy**, **timeout**, **caching**, etc.) while initializing the client, check out [Client documentation](http://www.rubydoc.info/gems/google_maps_apis/GoogleMapsApis/services/Client#initialize-instance_method).
 
 ### Latitude/longitude pairs format
 
@@ -240,7 +240,7 @@ Sample result:
 }]
 ```
 
-For more usage examples and result format, check out [gem documentation](http://www.rubydoc.info/gems/google_maps_service/GoogleMapsService/Apis/Directions), [test script](https://github.com/go-illa/google-maps-services-ruby/tree/master/spec/google_maps_service/apis/directions_spec.rb), and [Google Maps Directions API documentation][Directions API].
+For more usage examples and result format, check out [gem documentation](http://www.rubydoc.info/gems/google_maps_apis/GoogleMapsApis/services/Directions), [test script](https://github.com/go-illa/google-maps-services-ruby/tree/master/spec/google_maps_apis/services/directions_spec.rb), and [Google Maps Directions API documentation][Directions API].
 
 ### Distance Matrix API
 
@@ -255,7 +255,7 @@ matrix = gmaps.distance_matrix(origins, destinations,
     units: 'imperial')
 ```
 
-For more usage examples and result format, check out [gem documentation](http://www.rubydoc.info/gems/google_maps_service/GoogleMapsService/Apis/DistanceMatrix), [test script](https://github.com/go-illa/google-maps-services-ruby/tree/master/spec/google_maps_service/apis/distance_matrix_spec.rb), and [Google Maps Distance Matrix API documentation][Distance Matrix API].
+For more usage examples and result format, check out [gem documentation](http://www.rubydoc.info/gems/google_maps_apis/GoogleMapsApis/services/DistanceMatrix), [test script](https://github.com/go-illa/google-maps-services-ruby/tree/master/spec/google_maps_apis/services/distance_matrix_spec.rb), and [Google Maps Distance Matrix API documentation][Distance Matrix API].
 
 ### Elevation API
 
@@ -269,7 +269,7 @@ locations = [[40.714728, -73.998672], [-34.397, 150.644]]
 results = gmaps.elevation_along_path(locations, 5)
 ```
 
-For more usage examples and result format, check out [gem documentation](http://www.rubydoc.info/gems/google_maps_service/GoogleMapsService/Apis/Elevation), [test script](https://github.com/go-illa/google-maps-services-ruby/tree/master/spec/google_maps_service/apis/elevation_spec.rb), and [Google Maps Elevation API documentation][Elevation API].
+For more usage examples and result format, check out [gem documentation](http://www.rubydoc.info/gems/google_maps_apis/GoogleMapsApis/services/Elevation), [test script](https://github.com/go-illa/google-maps-services-ruby/tree/master/spec/google_maps_apis/services/elevation_spec.rb), and [Google Maps Elevation API documentation][Elevation API].
 
 ### Geocoding API
 
@@ -281,7 +281,7 @@ results = gmaps.geocode('1600 Amphitheatre Parkway, Mountain View, CA')
 results = gmaps.reverse_geocode([40.714224, -73.961452])
 ```
 
-For more usage examples and result format, check out [gem documentation](http://www.rubydoc.info/gems/google_maps_service/GoogleMapsService/Apis/Geocoding), [test script](https://github.com/go-illa/google-maps-services-ruby/tree/master/spec/google_maps_service/apis/geocoding_spec.rb), and [Google Maps Geocoding API documentation][Geocoding API].
+For more usage examples and result format, check out [gem documentation](http://www.rubydoc.info/gems/google_maps_apis/GoogleMapsApis/services/Geocoding), [test script](https://github.com/go-illa/google-maps-services-ruby/tree/master/spec/google_maps_apis/services/geocoding_spec.rb), and [Google Maps Geocoding API documentation][Geocoding API].
 
 ### Roads API
 
@@ -312,7 +312,7 @@ place_ids = [
 results = gmaps.speed_limits(place_ids)
 ```
 
-For more usage examples and result format, check out [gem documentation](http://www.rubydoc.info/gems/google_maps_service/GoogleMapsService/Apis/Roads), [test script](https://github.com/go-illa/google-maps-services-ruby/tree/master/spec/google_maps_service/apis/roads_spec.rb), and [Google Maps Roads API documentation][Roads API].
+For more usage examples and result format, check out [gem documentation](http://www.rubydoc.info/gems/google_maps_apis/GoogleMapsApis/services/Roads), [test script](https://github.com/go-illa/google-maps-services-ruby/tree/master/spec/google_maps_apis/services/roads_spec.rb), and [Google Maps Roads API documentation][Roads API].
 
 ### Time Zone API
 
@@ -324,7 +324,7 @@ timezone = gmaps.timezone([39.603481, -119.682251])
 timezone = gmaps.timezone([39.603481, -119.682251], timestamp: Time.at(1608))
 ```
 
-For more usage examples and result format, check out [gem documentation](http://www.rubydoc.info/gems/google_maps_service/GoogleMapsService/Apis/TimeZone), [test script](https://github.com/go-illa/google-maps-services-ruby/tree/master/spec/google_maps_service/apis/time_zone_spec.rb), and [Google Maps Time Zone API documentation][Time Zone API].
+For more usage examples and result format, check out [gem documentation](http://www.rubydoc.info/gems/google_maps_apis/GoogleMapsApis/services/TimeZone), [test script](https://github.com/go-illa/google-maps-services-ruby/tree/master/spec/google_maps_apis/services/time_zone_spec.rb), and [Google Maps Time Zone API documentation][Time Zone API].
 
 ### Polyline encoder/decoder
 
@@ -336,16 +336,16 @@ For more usage examples and result format, check out [gem documentation](http://
 To handle Google Encoded Polyline, this gem provides encoder/decoder:
 
 ```ruby
-require 'google_maps_service/polyline' # Or, require 'google_maps_service' is enough
+require 'google_maps_apis/polyline' # Or, require 'google_maps_apis' is enough
 
 # Decode polyline
 encoded_path = '_p~iF~ps|U_ulLnnqC_mqNvxq`@'
-path = GoogleMapsService::Polyline.decode(encoded_path)
+path = GoogleMapsApis::Polyline.decode(encoded_path)
 #=> [{:lat=>38.5, :lng=>-120.2}, {:lat=>40.7, :lng=>-120.95}, {:lat=>43.252, :lng=>-126.45300000000002}]
 
 # Encode polyline
 path = [[38.5, -120.2], [40.7, -120.95], [43.252, -126.453]]
-encoded_path = GoogleMapsService::Polyline.encode(path)
+encoded_path = GoogleMapsApis::Polyline.encode(path)
 #=> "_p~iF~ps|U_ulLnnqC_mqNvxq`@"
 ```
 

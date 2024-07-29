@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
-ruby '3.0.1'
+ruby '3.0.6'
 
-# Specify your gem's dependencies in google_maps_service.gemspec
+# Specify your gem's dependencies in google_maps_apis.gemspec
 gemspec
 
 group :development do
