@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0
+
+* Rebrand the Gem package to `google_maps_apis`
+
 ## 0.4.2
 
 * Add nearest roads Google Roads API support
