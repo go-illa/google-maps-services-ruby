@@ -18,6 +18,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_runtime_dependency 'multi_json', '~> 1.12'
-  spec.add_runtime_dependency 'faraday', '~> 2.0'
+  spec.add_runtime_dependency 'faraday', '~> 1.0'
   spec.add_runtime_dependency 'retriable', '~> 3.1'
 end
